@@ -1,0 +1,84 @@
+<qos_rules>
+	<nodes>
+		<type_node name="MME">
+			<service name="call">
+				<rules name="bit_rate" unit="kbps">
+					<low>300</low>
+					<medium>200</medium>
+					<warning>100</warning>
+					<critical>50</critical>
+				</rules>
+				<rules name="delay" unit="ms">
+					<low>25</low>
+					<medium>50</medium>
+					<warning>75</warning>
+					<critical>100</critical>
+				</rules>
+				<rules name="packet_loss_rate" unit="pourcent">
+					<low>0.05</low>
+					<medium>0.1</medium>
+					<warning>0.15</warning>
+					<critical>0.2</critical>
+				</rules>
+				<rules name="jitter" unit="ms">
+					<low>10</low>
+					<medium>20</medium>
+					<warning>25</warning>
+					<critical>30</critical>
+				</rules>
+			</service>
+			<service name="sms">
+				<rules name="bit_rate" unit="kbps">
+					<low>100</low>
+					<medium>70</medium>
+					<warning>50</warning>
+					<critical>25</critical>
+				</rules>
+				<rules name="delay" unit="ms">
+					<low>60000</low>
+					<medium>90000</medium>
+					<warning>120000</warning>
+					<critical>150000</critical>
+				</rules>
+				<rules name="packet_loss_rate" unit="pourcent">
+					<low>0.05</low>
+					<medium>0.1</medium>
+					<warning>0.15</warning>
+					<critical>0.2</critical>
+				</rules>
+				<rules name="jitter" unit="ms">
+					<low>10000</low>
+					<medium>20000</medium>
+					<warning>25000</warning>
+					<critical>30000</critical>
+				</rules>
+			</service>
+			<service name="mms">
+				<rules name="bite_rate" unit="kbps">
+					<low>100</low>
+					<medium>60</medium>
+					<warning>40</warning>
+					<critical>20</critical>
+				</rules>
+				<rules name="delay" unit="ms">
+					<low>120000</low>
+					<medium>150000</medium>
+					<warning>180000</warning>
+					<critical>210000</critical>
+				</rules>
+				<rules name="packet_loss_rate" unit="pourcent">
+					<low>0.05</low>
+					<medium>0.1</medium>
+					<warning>0.15</warning>
+					<critical>0.2</critical>
+				</rules>
+				<rules name="jitter" unit="ms">
+					<low>25000</low>
+					<medium>30000</medium>
+					<warning>35000</warning>
+					<critical>40000</critical>
+				</rules>
+			</service>
+		</type_node>
+	</nodes>
+</qos_rules>

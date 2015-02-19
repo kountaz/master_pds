@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes>
+	<node name="lte.bras.paris.016">
+		<param name="kernel.host">127.0.0.1</param>
+		<param name="kernel.bootstrapPort">2800</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.bras.port">2801</param>
+		<param name="frontend.bras.portReceiver">2802</param>
+		<param name="frontend.bras.target">127.0.0.1:2602</param>
+		<param name="faildetector.port">2803</param>
+		<param name="activity.bras.port">2804</param>
+	</node>
+	<node name="lte.bras.paris.017">
+		<param name="kernel.host">127.0.0.1</param>
+		<param name="kernel.bootstrapPort">2820</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.bras.port">2821</param>
+		<param name="frontend.bras.portReceiver">2822</param>
+		<param name="frontend.bras.target">127.0.0.1:2622</param>
+		<param name="faildetector.port">2823</param>
+		<param name="activity.bras.port">2824</param>
+	</node>
+	<node name="lte.bras.paris.018">
+		<param name="kernel.host">127.0.0.1</param>
+		<param name="kernel.bootstrapPort">2840</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.bras.port">2841</param>
+		<param name="frontend.bras.portReceiver">2842</param>
+		<param name="frontend.bras.target">127.0.0.1:2642</param>
+		<param name="faildetector.port">2843</param>
+		<param name="activity.bras.port">2844</param>
+	</node>
+	<node name="lte.bras.paris.019">
+		<param name="kernel.host">127.0.0.1</param>
+		<param name="kernel.bootstrapPort">2860</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.bras.port">2861</param>
+		<param name="frontend.bras.portReceiver">2862</param>
+		<param name="frontend.bras.target">127.0.0.1:2662</param>
+		<param name="faildetector.port">2863</param>
+		<param name="activity.bras.port">2864</param>
+	</node>
+	<node name="lte.bras.paris.020">
+		<param name="kernel.host">127.0.0.1</param>
+		<param name="kernel.bootstrapPort">2880</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.bras.port">2881</param>
+		<param name="frontend.bras.portReceiver">2882</param>
+		<param name="frontend.bras.target">127.0.0.1:2682</param>
+		<param name="faildetector.port">2883</param>
+		<param name="activity.bras.port">2884</param>
+	</node>
+</nodes>

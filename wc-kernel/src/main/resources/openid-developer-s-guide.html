@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>OpenID Developper's Guide</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width">
+		<style type="text/css">
+		<!--
+		html, body { height: 100%; }
+		body { margin: 1em 0.8em 1em 25%; }
+		pre { border: 1px solid black; padding: 0.2em; }
+		pre > strong { background: yellow; }
+		table { margin: auto; border-collapse: collapse; }
+		table, th, td { border: 1px solid black; }
+		th, td { padding: 0.1em 0.4em; }
+		#summary > h2 { margin: 0; padding: 0; text-align: center; font-size: 1em; }
+		#summary a { text-decoration: none; color: blue; }
+		#summary a:hover { text-decoration: underline; }
+		#summary { position: fixed; top: 0; left: 0; height: 100%; width: 24%; overflow: auto; background: pink; }
+		#summary > ul { padding: 0 0 0 0.2em; list-style-type: none; }
+		#summary > ul > li { font-size: 1em; font-weight: bold; }
+		#summary > ul > li > ul { padding: 0 0 0 1.4em; list-style-type: disc; }
+		#summary > ul > li > ul > li { font-size: 0.9em; font-weight: normal; }
+		-->
+		</style>
+	</head>
+	<body>
+		<!--[if lt IE 7]>
+			<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+		<![endif]-->
+
+<h1 id="p0">OpenID Developper's Guide</h1>
+
+<h2 id="p1">Introduction</h2>
+<p>Ce document décrit le cadre de développement du groupe de projet de synthèse 2013/2014 OpenID.</p>
+<p>
+	Les indications retranscrites doivent systématiquement être respectées. 
+	Le non-respect de ces indications compliquerait – voir ne permettrait pas – l'intégration des composants développés.
+</p>
+<p>Dernière modification : 5 mars 2014 par Steven ENTEN</p>
+
+<div id="summary">
+	<h2 id="p2">Sommaire</h2>
+	<ul>
+		<li><a href="#p1">Introduction</a></li>
+		<li>
+			<a href="#p3">Cadre de développement</a>
+			<ul>
+				<li>
+					<a href="#p3-1">Fichier pom.xml</a>
+					<!-- 
+					<ul>
+						<li><a href="#p3-1-1">Template OpenID</a></li>
+						<li><a href="#p3-1-2">Maven Group ID</a></li>
+						<li><a href="#p3-1-3">Maven Artifact ID</a></li>
+						<li><a href="#p3-1-4">Jar exécutable</a></li>
+						<li><a href="#p3-1-5">Dépendances obligatoires</a></li>
+						<li><a href="#p3-1-6">Exemple de fichier <em>pom.xml</em></a></li>
+					</ul>
+					-->
+				</li>
+				<li><a href="#p3-2">Organisation des packages</a></li>
+				<li><a href="#p3-3">Flux de sortie système (<em>System.out</em>)</a></li>
+				<li><a href="#p3-4">Fichiers <em>properties</em></a></li>
+				<li><a href="#p3-5">Gérer les exceptions</a></li>
+				<li><a href="#p3-6">Documentation</a></li>
+				<li><a href="#p3-7">Tests unitaires</a></li>
+				<li><a href="#p3-8">Tests d'intégrations</a></li>
+				<li><a href="#p3-9">Pattern Singleton</a></li>
+				<li><a href="#p3-10">Enumérations</a></li>
+				<li><a href="#p3-11">Communication avec le Back Office (<em>communication-api</em>)</a></li>
+				<li><a href="#p3-12">Gérer les propriétés d'un contexte (<em>datagrid-api</em>)</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#p4">Annexes</a>
+			<ul>
+				<li><a href="#p4-1">Diagramme de composants du noyau logiciel</a></li>
+				<li><a href="#p4-2">Tutorial de création d'un nouveau projet</a></li>
+				<li><a href="#p4-3">Tutorial d'utilisation de la Communication API</a></li>
+				<li><a href="#p4-4">Tutorial d'utilisation de la Datagrid API</a></li>
+				<li><a href="#p4-5">Tutorial d'utilisation de DOM4J</a></li>
+			</ul>
+		</li>
+	</ul>
+</div>
+
+<h2 id="p3">Cadre de développement</h2>
+
+<h3 id="p3-1">Fichier <em>pom.xml</em></h3>
+
+<h4 id="p3-1-1">Template OpenID</h4>
+<p>Tout projet créé sous eclipse doit être un <strong>projet Maven de <em>template OpenID</em></strong>.</p>
+<h5>BUG: dupplication du plugin <em>maven-autorun-plugin</em></h5>
+<p>
+	Lors de la création du nouveau projet, un bug se glisse dans le fichier <em>pom.xml</em> : 
+	le plugin <em>maven-autorun-plugin</em> apparaît deux fois. Il faut supprimer la première déclaration 
+	et déplacer la seconde dans la partie <em>profiles</em> du profile <em>linux</em>, après le 
+	plugin <em>maven-assembly-plugin</em>.<br />
+	Après modification, la partie <em>profiles</em> doit être structurée comme l'extrait de code ci-dessous.
+</p>
+<pre>
+&lt;profiles&gt;
+<strong>    &lt;profile&gt;
+        &lt;id&gt;linux&lt;/id&gt;</strong>
+        &lt;activation&gt;
+            &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;
+        &lt;/activation&gt;
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;
+                    ...
+                &lt;/plugin&gt;
+<strong>                &lt;plugin&gt;
+                    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                    &lt;artifactId&gt;maven-antrun-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;1.7&lt;/version&gt;
+                    ...
+                &lt;/plugin&gt;</strong>
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+<strong>    &lt;/profile&gt;</strong>
+    &lt;profile&gt;
+        &lt;id&gt;windows&lt;/id&gt;
+        ...
+    &lt;/profile&gt;
+&lt;/profiles&gt;
+</pre>
+
+<h4 id="p3-1-2">Maven Group ID</h4>
+<p>Le groupId des projets est créés est toujours le suivant : <code style="font-weight: bold">org.openid.hs</code></p>
+
+<h4 id="p3-1-3">Maven Artifact ID</h4>
+<p>
+	Le nom de l'artifact doit être identique au nom du projet eclipse. 
+	Ce nom doit respecter l'expression régulière suivante : <code style="font-weight: bold">[a-z0-9_-]+</code>
+</p>
+
+<h4 id="p3-1-4">Jar exécutable</h4>
+<p>
+	Dans le cas d'un jar exécutable (ou runnable) c'est-à-dire un jar possédant un "main" 
+	(<code>public static void main (String []args)</code>), il faut indiquer la <em>mainClass</em> 
+	(plugin <em>maven-jar-plugin</em>).
+</p>
+<pre>
+&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-jar-plugin&lt;/artifactId&gt;
+    &lt;version&gt;2.2&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;archive&gt;
+            &lt;manifestEntries&gt;
+                &lt;Class-Path&gt;../conf/&lt;/Class-Path&gt;
+            &lt;/manifestEntries&gt;
+            &lt;manifest&gt;
+                &lt;addClasspath&gt;false&lt;/addClasspath&gt;
+<strong>                &lt;mainClass&gt;org.openid.hs.example.HelloWorldApp&lt;/mainClass&gt;</strong>
+                &lt;classpathPrefix&gt;../lib/&lt;/classpathPrefix&gt;
+            &lt;/manifest&gt;
+        &lt;/archive&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;
+</pre>
+<p>
+	Dans le cas contraire, il faut veiller à supprimer l'instruction indiquant la <em>mainClass</em>.<br /> 
+	Dans le code précédent, il faut donc supprimer l'insruction suivante : 
+	<code>&lt;mainClass&gt;org.openid.hs.example.HelloWorldApp&lt;/mainClass&gt;</code>
+</p>
+
+<h4 id="p3-1-5">Dépendances obligatoires</h4>
+<p>Tout projet créé doit importer les librairies suivantes :</p>
+<ul>
+	<li>Les librairies de test JUnit et Mockito pour pouvoir écrire des tests unitaires et d'intégrations ;</li>
+	<li>Le noyau logiciel (artifact <em>wc-kernel</em>) pour pouvoir utiliser les outils et fonctionnalités 
+	élémentaires (Communication API, Datagrid API, WC Bootstrap, WC Core, SLF4J, DOM4J, etc).</li>
+</ul>
+<pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.mockito&lt;/groupId&gt;
+<strong>    &lt;artifactId&gt;mockito-all&lt;/artifactId&gt;</strong>
+    &lt;version&gt;${mockito.version}&lt;/version&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;junit&lt;/groupId&gt;
+<strong>    &lt;artifactId&gt;junit&lt;/artifactId&gt;</strong>
+    &lt;version&gt;${junit.version}&lt;/version&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.openid.hs&lt;/groupId&gt;
+<strong>    &lt;artifactId&gt;wc-kernel&lt;/artifactId&gt;</strong>
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;
+</pre>
+
+<h4 id="p3-1-6">Exemple de fichier <em>pom.xml</em></h4>
+<p>Ci-dessous un exemple de fichier <em>pom.xml</em> respectant toutes les conventions 
+énoncées précédemments.</p>
+<div>
+	<p><a href="#pom-example" id="pom-example-displayer">Cliquez ici pour afficher/masquer l'exemple de fichier <em>pom.xml</em></a>
+	<pre id="pom-example">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+<strong>    &lt;groupId&gt;org.openid.hs&lt;/groupId&gt;</strong>
+<strong>    &lt;artifactId&gt;example&lt;/artifactId&gt;</strong>
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+<strong>    &lt;name&gt;openID-template&lt;/name&gt;</strong>
+    &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;java.version&gt;1.7&lt;/java.version&gt;
+        &lt;junit.version&gt;4.8.1&lt;/junit.version&gt;
+        &lt;mockito.version&gt;1.8.5&lt;/mockito.version&gt;
+    &lt;/properties&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.mockito&lt;/groupId&gt;
+<strong>            &lt;artifactId&gt;mockito-all&lt;/artifactId&gt;</strong>
+            &lt;version&gt;${mockito.version}&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+<strong>            &lt;artifactId&gt;junit&lt;/artifactId&gt;</strong>
+            &lt;version&gt;${junit.version}&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.openid.hs&lt;/groupId&gt;
+<strong>            &lt;artifactId&gt;wc-kernel&lt;/artifactId&gt;</strong>
+            &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;artifactId&gt;maven-deploy-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.6&lt;/version&gt;
+            &lt;/plugin&gt;
+            &lt;plugin&gt;
+                &lt;artifactId&gt;maven-release-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.1&lt;/version&gt;
+            &lt;/plugin&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.3.2&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;source&gt;${java.version}&lt;/source&gt;
+                    &lt;target&gt;${java.version}&lt;/target&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-jar-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.2&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;archive&gt;
+                        &lt;manifestEntries&gt;
+                            &lt;Class-Path&gt;../conf/&lt;/Class-Path&gt;
+                        &lt;/manifestEntries&gt;
+                        &lt;manifest&gt;
+                            &lt;addClasspath&gt;false&lt;/addClasspath&gt;
+<strong>                            &lt;mainClass&gt;org.openid.hs.example.HelloWorldApp&lt;/mainClass&gt;</strong>
+                            &lt;classpathPrefix&gt;../lib/&lt;/classpathPrefix&gt;
+                        &lt;/manifest&gt;
+                    &lt;/archive&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+    &lt;profiles&gt;
+        &lt;profile&gt;
+            &lt;id&gt;linux&lt;/id&gt;
+            &lt;activation&gt;
+                &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;
+            &lt;/activation&gt;
+            &lt;build&gt;
+                &lt;plugins&gt;
+                    &lt;plugin&gt;
+                        &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;
+                        &lt;executions&gt;
+                            &lt;execution&gt;
+                                &lt;id&gt;tar-gz&lt;/id&gt;
+                                &lt;phase&gt;package&lt;/phase&gt;
+                                &lt;goals&gt;
+                                    &lt;goal&gt;single&lt;/goal&gt;
+                                &lt;/goals&gt;
+                                &lt;configuration&gt;
+                                    &lt;descriptors&gt;
+                                        &lt;descriptor&gt;src/main/assembly/tar.gz.xml&lt;/descriptor&gt;
+                                    &lt;/descriptors&gt;
+                                &lt;/configuration&gt;
+                            &lt;/execution&gt;
+                        &lt;/executions&gt;
+                    &lt;/plugin&gt;
+                    &lt;plugin&gt;
+                        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+<strong>                        &lt;artifactId&gt;maven-antrun-plugin&lt;/artifactId&gt;</strong>
+                        &lt;version&gt;1.7&lt;/version&gt;
+                        &lt;executions&gt;
+                            &lt;execution&gt;
+                                &lt;id&gt;server-copy&lt;/id&gt;
+                                &lt;goals&gt;
+                                    &lt;goal&gt;run&lt;/goal&gt;
+                                &lt;/goals&gt;
+                                &lt;phase&gt;install&lt;/phase&gt;
+                                &lt;configuration&gt;
+                                    &lt;target&gt;
+                                        &lt;scp trust="yes" todir="kyoto:openid@192.168.0.33:/home/kyoto/Work"&gt;
+                                            &lt;fileset dir="${basedir}/target"&gt;
+                                                &lt;include name="**/*.tar.gz" /&gt;
+                                            &lt;/fileset&gt;
+                                        &lt;/scp&gt;
+                                    &lt;/target&gt;
+                                &lt;/configuration&gt;
+                            &lt;/execution&gt;
+                        &lt;/executions&gt;
+                        &lt;dependencies&gt;
+                            &lt;dependency&gt;
+                                &lt;groupId&gt;org.apache.ant&lt;/groupId&gt;
+                                &lt;artifactId&gt;ant-jsch&lt;/artifactId&gt;
+                                &lt;version&gt;1.8.2&lt;/version&gt;
+                            &lt;/dependency&gt;
+                        &lt;/dependencies&gt;
+                    &lt;/plugin&gt;
+                &lt;/plugins&gt;
+            &lt;/build&gt;
+        &lt;/profile&gt;
+        &lt;profile&gt;
+            &lt;id&gt;windows&lt;/id&gt;
+            &lt;activation&gt;
+            &lt;/activation&gt;
+            &lt;build&gt;
+                &lt;plugins&gt;
+                    &lt;plugin&gt;
+                        &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;
+                        &lt;executions&gt;
+                            &lt;execution&gt;
+                                &lt;id&gt;zip&lt;/id&gt;
+                                &lt;phase&gt;package&lt;/phase&gt;
+                                &lt;goals&gt;
+                                    &lt;goal&gt;single&lt;/goal&gt;
+                                &lt;/goals&gt;
+                                &lt;configuration&gt;
+                                    &lt;descriptors&gt;
+                                        &lt;descriptor&gt;src/main/assembly/zip.xml&lt;/descriptor&gt;
+                                    &lt;/descriptors&gt;
+                                &lt;/configuration&gt;
+                            &lt;/execution&gt;
+                        &lt;/executions&gt;
+                    &lt;/plugin&gt;
+                &lt;/plugins&gt;
+            &lt;/build&gt;
+        &lt;/profile&gt;
+    &lt;/profiles&gt;
+&lt;/project&gt;
+	</pre>
+</div>
+
+<h3 id="p3-2">Organisation des packages</h3>
+<p>Un package correspond à une fonctionnalité. Par conséquent, le nom doit package doit renseigner 
+sur la nture de la fonctionnalité implémentée.<br />
+Le nom d'un package doit respecter l'expression régulière suivante : 
+<code>org.openid.hs.[a-z]+</code><br />
+<small>Par exemple, pour la fonctionnalité de communication avec le Back Office, le nom du package choisi 
+est le suivant : <code>org.openid.hs.communication</code></small></p>
+<p>Générallement, l'implémentation d'une fonctionnalité nécessite l'écriture d'un certain nombre 
+de classes (et d'interfaces). Le grand nombre de fichiers créés rend difficile l'identification de 
+la nature de chacun de ces fichiers. A partir de 5 fichiers dans un package, il est impératif de le diviser. 
+Cette division offre une meilleure organisation des fichiers et permet à un développeur étranger de 
+connaître la nature des fichiers avant même de les consulter.</p>
+<table>
+	<tr>
+		<th>Package</th>
+		<th>Nature des fichiers</th>
+	</tr>
+	<tr>
+		<td><code>org.openid.hs.feature</code></td>
+		<td>Interfaces, classes abstraites, API et classes "main".</td>
+	</tr>
+	<tr>
+		<td><code>org.openid.hs.feature.bean</code></td>
+		<td>Implémentations d'interfaces "basiques" (typiquement l'implémentation de 
+		classes métiers avec des getters/setters).</td>
+	</tr>
+	<tr>
+		<td><code>org.openid.hs.feature.controller</code></td>
+		<td>Classes contrôleurs comme des factories, gateways, listeners, formateurs, etc.</td>
+	</tr>
+	<tr>
+		<td><code>org.openid.hs.feature.dialog</code></td>
+		<td>Classes d'interfaces homme/machine (ce n'est pas forcément que des IHM, cela 
+		peut être des interfaces consoles).</td>
+	</tr>
+	<tr>
+		<td><code>org.openid.hs.feature.exception</code></td>
+		<td>Exceptions liées à la fonctionnalité implémentée.</td>
+	</tr>
+	<tr>
+		<td><code>org.openid.hs.feature.exception</code></td>
+		<td>Exceptions liées à la fonctionnalité implémentée.</td>
+	</tr>
+	<tr>
+		<td><code>org.openid.hs.feature.helper</code></td>
+		<td>Classes utilitaires (comme <code>StringHelper</code>, <code>LoggerHelper</code>, <code>RessourceHelper</code>, etc).</td>
+	</tr>
+</table>
+
+<h3 id="p3-3">Flux de sortie système (<em>System.out</em>)</h3>
+<p>
+	L'écriture directe dans le flux de sortie système est strictement interdite. 
+	Les instructions ci-dessous sont donc à bannir.
+</p> 
+<ul>
+	<li><code>System.out.println("text");</code></li>
+	<li><code>e.printStackTrace();</code></li>
+</ul>
+<p>
+	Pour écrire dans le flux de sortie il faut utiliser le logger SLF4J. La classe utilitaire 
+	<code>LoggerHelper</code> facilite l'utilisation du logger.<br />
+</p>
+<table>
+	<tr>
+		<th>Type de message</th>
+		<th>Code</th>
+	</tr>
+	<tr>
+		<td>Information</td>
+		<td><code>LoggerHelper.info("message");</code></td>
+	</tr>
+	<tr>
+		<td>Warning</td>
+		<td><code>LoggerHelper.warn("message");</code></td>
+	</tr>
+	<tr>
+		<td>Error</td>
+		<td><code>LoggerHelper.error("message");</code></td>
+	</tr>
+	<tr>
+		<td>Debug</td>
+		<td><code>LoggerHelper.debug("message");</code></td>
+	</tr>
+	<tr>
+		<td>Trace</td>
+		<td><code>LoggerHelper.trace("message");</code></td>
+	</tr>
+</table>
+<p>Ci-dessous figure un exemple d'utilisation du logger.</p>
+<pre>
+public class Test {
+    ...
+    public void method() {
+        try {
+            this.operation();
+<strong>            LoggerHelper.info("Operation is successful");</strong>
+        } catch (Exception e) {
+<strong>            LoggerHelper.error("TestException caught!", e);</strong>
+        }
+    }
+    private void operation() throws TestException {
+        try {
+            ...
+        } catch (Exception e) {
+            throw TestException(e);
+        }
+    }
+    ...
+}
+</pre>
+<h5>Cas particulier : écriture d'une IHM console</h5>
+<p>
+	Dans le cas de l'écriture d'une IHM console, il faut utiliser l'instance 
+	<code>Console</code> du système (<code>System.console()</code>) pour afficher et écrire des données.
+</p>
+
+<h3 id="p3-4">Fichiers <em>properties</em></h3>
+<p>
+	La classe utilitaire <code>ResourceHelper</code> permet de récupérer le contenu 
+	d'un fichier en passant son chemin à la méthode <code>readFrom</code>.
+</p>
+<pre>
+String filePath = "/unfichier.xml";
+<strong>String xml = ResourceHelper.readFrom(filePath);</strong>
+</pre>
+<p>
+	L'exploitation de fichiers <em>properties</em> doit être réalisée via l'utilisation 
+	de la classe utilitaire <code>ResourceHelper</code>.
+</p>
+<p>
+	Pour récupérer tout le contenu d'un fichier <em>properties</em> il faut utiliser la méthode 
+	statique <code>getProperties()</code> en indiquant le chemin du fichier : 
+</p>
+<pre>
+String filePath = "/file.properties";
+<strong>Properties p = ResourceHelper.getProperties(filePath);</strong>
+String key = "uneclef";
+String value = p.getProperty(key);
+LoggerHelper.info(
+    String.format(
+        "Valeur associée à la clé %s dans le fichier properties %s : %s",
+        key, filePath, value
+    )
+);
+</pre>
+<p>
+	La classe utilitaire <code>ResourceHelper</code> permet de récupérer la valeur d'une clée 
+	précise dans un fichier <em>properties</em>. Plusieurs fonctions statiques permettent de 
+	réaliser cette opération en fonction de la nature de la donnée à récupérer. 
+</p>
+<table>
+	<tr>
+		<th>Type de donnée</th>
+		<th>Code</th>
+	</tr>
+	<tr>
+		<td>String</td>
+		<td><code>String x = ResourceHelper.getString("/file.properties", "key");</code></td>
+	</tr>
+	<tr>
+		<td>Integer</td>
+		<td><code>int x = ResourceHelper.getInteger("/file.properties", "key");</code></td>
+	</tr>
+	<tr>
+		<td>Short</td>
+		<td><code>short x = ResourceHelper.getShort("/file.properties", "key");</code></td>
+	</tr>
+	<tr>
+		<td>Long</td>
+		<td><code>long x = ResourceHelper.getLong("/file.properties", "key");</code></td>
+	</tr>
+	<tr>
+		<td>Double</td>
+		<td><code>double x = ResourceHelper.getDouble("/file.properties", "key");</code></td>
+	</tr>
+	<tr>
+		<td>Chars</td>
+		<td><code>char[] x = ResourceHelper.getChars("/file.properties", "key");</code></td>
+	</tr>
+	<tr>
+		<td>Char</td>
+		<td><code>char x = ResourceHelper.getChar("/file.properties", "key");</code></td>
+	</tr>
+	<tr>
+		<td>Bytes</td>
+		<td><code>byte[] x = ResourceHelper.getBytes("/file.properties", "key");</code></td>
+	</tr>
+	<tr>
+		<td>Byte</td>
+		<td><code>byte x = ResourceHelper.getByte("/file.properties", "key");</code></td>
+	</tr>
+	<tr>
+		<td>Boolean</td>
+		<td><code>boolean x = ResourceHelper.getBoolean("/file.properties", "key");</code></td>
+	</tr>
+	<tr>
+		<td>Object</td>
+		<td><code>Object x = ResourceHelper.get("/file.properties", "key");</code></td>
+	</tr>
+</table>
+
+
+<h3 id="p3-5">Gérer les exceptions</h3>
+<p>La gestion des exceptions ne doivent pas être négligées.</p>
+<p>
+	Pour créer une nouvelle exception il suffit de copier/coller une exception existante du projet <em>wc-core</em> 
+	(par exemple copier l'exception <code>org.openid.hs.core.InitializationException</code>) et lui choisir un nom. 
+	La nouvelle exception est prête à être utilisée dans tous les cas de figures.
+</p>
+<p>Dans le cas d'une levée d'exception, il faut veiller à chaîner les exceptions au besoin.</p>
+<pre>
+public void method() throws TestException {
+    try {
+        ...
+    } catch (Exception e) {
+<strong>        throw new TestException("Message qui décrit l'exception", e);</strong>
+    }
+}
+</pre>
+<p>Dans le cas d'une capture d'exception, il faut afficher un message d'erreur et la trace de l'exception capturée.</p>
+<pre>
+try {
+    ...
+} catch (Exception e) {
+<strong>    LoggerHelper.error("Un message d'erreur", e);</strong>
+}
+</pre>
+
+<h3 id="p3-6">Documentation</h3>
+<p>Il est obligatoire de rédiger la documentation de tout projet créé.</p>
+<p>
+	Pour chaque classe ou interface créé, il faut la décrire, renseigner l'auteur (qui a créé ou 
+	modifié la classe ou l'interface) et la version (nom de la release par exemple R2).<br />
+</p>
+<p>
+	Pour chaque méthode écrite, il faut la décrire ainsi que ses paramètres, 
+	son éventuel retour et ses exceptions levées.<br />
+</p>
+<p>Ci-dessous un exemple de documentation d'une interface et d'une méthode.</p>
+<pre>
+<strong>/**
+ * Interface of a Profile object which manages a set of services.
+ * @version R2
+ * @author Steven
+ * 
+ */</strong>
+public interface Profile {
+    ...
+    <strong>/**
+     * Returns a service of the profile.
+     * @param pServiceName Name of a service to collect.
+     * @throws ProfileException When the profile hasn't a service 
+     * matches to the given name.
+     */</strong>
+    public Service getService(String pServiceName) throws ProfileException;
+    ...
+}
+</pre>
+<p>
+	Il n'est pas nécessaire de documenter l'implémentation d'une méthode d'interface 
+	(car elle est documentée dans l'interface).
+</p>
+<pre>
+<strong>/**
+ * Concrete Profile.
+ * @see Profile
+ * @version R2
+ * @author Steven
+ *
+ */</strong>
+public class ProfileBean implements Profile {
+    ...
+    @Override
+    public Service getService(String pServiceName) throws ProfileException {
+        ...
+    }
+}
+</pre>
+
+<h3 id="p3-7">Tests unitaires</h3>
+<p>
+	Il est obligatoire d'écrire des tests unitaires significatifs. Par conséquent, les getters/setters 
+	n'ont pas besoin d'être testés.
+</p>
+<p>
+	L'écriture de tests unitaires permet de repérer des problèmes de conception : quand le périmètre d'une 
+	méthode ne peut pas être testé c'est généralement un problème de conception de la classe testée.<br /> 
+	Il faut veiller à ne pas confondre plusieurs périmètre dans le test d'une méthode. Il est alors 
+	nécessaire d'utiliser les mocks.<br />
+	Les tests unitaires doivent utiliser la librairie JUnit.
+</p>
+<p>Ci-dessous un exemple de test unitaire utilisant un mock pour ne pas confondre plusieurs périmètres.</p>
+<pre>
+@Test
+public void createFromTest() throws HelloException, CommunicationException {
+    String something = "test2";
+    
+    Message mockMessage = Mockito.mock(Message.class);
+    String mockMessageGetTypeReturn = "hello";
+    HelloWorld mockMessageGetContentReturn = new HelloWorldBean(something);
+    Mockito.when(mockMessage.getType()).thenReturn(mockMessageGetTypeReturn);
+    Mockito.when(mockMessage.getContent()).thenReturn(mockMessageGetContentReturn);
+    
+    HelloWorld instance = HelloWorldFactory.createFrom(mockMessage);
+    
+    assertTrue(instance.getSomething().equals(something));
+    
+    Mockito.verify(mockMessage, Mockito.times(1)).getType();
+    Mockito.verify(mockMessage, Mockito.times(1)).getContent();
+}
+</pre>
+
+<h3 id="p3-8">Tests d'intégrations</h3>
+<p>
+	Un test d'intégration illustre l'utilisation d'une fonctionnalité et le déroulement d'un ou plusieurs scénarios.<br />
+	Le nom d'un test unitaire indique la fonctionnalité testée et doit respecter l'expression régulière suivante : 
+	<code>[A-Za-z0-9_-]+TI</code>
+</p>
+<p>
+	Pour chaque scénario, il faut créer une méthode statique prennant en paramètre des arguments permettant 
+	de changer le résultat du scénario. Cette méthode doit retourner un booléen pour indiquer le succès 
+	ou l'échec du scénario.<br />
+	Ci-dessous un exemple de test d'intégration.
+</p>
+<pre>
+public class HelloWorldTI {
+<strong>    public static boolean runTest1() {</strong>
+        ...
+    }
+<strong>    public static boolean runTest2() {</strong>
+        ...
+    }
+    public static void main(String[] args) {
+        boolean test = true;
+        if (!runTest1()) test = false;
+        if (!runTest2()) test = false;
+        LoggerHelper.info("Inégration test result: "+ ((test)?"OK":"KO"));
+    }
+}
+</pre>
+
+<h3 id="p3-9">Pattern Singleton</h3>
+<p>Ci-dessous figure un exemple d'application du pattern Singleton.</p>
+<pre>
+public class TestAPI {
+    /**
+     * The unique instance of TestAPI.
+     */
+<strong>    public static TestAPI instance;</strong>
+    /**
+     * Indicates if the unique API is initialized.
+     * @return True if the unique API is initialized.
+     */
+<strong>    public static boolean isInit() {</strong>
+        return instance != null;
+    }
+    /**
+     * Initializes the unique API.
+     * @param pArg An argument.
+     * @return The unique API.
+     * @throws TestException When the API is already initialized.
+     */
+<strong>    public static TestAPI init(String pArg) throws TestException {</strong>
+        if (isInit()) {
+            throw new TestException("The test API is already initialized.");
+        }
+        instance = new TestAPI(arg);
+        return instance;
+    }
+    /**
+     * Destroys the unique API.
+     * @throws TestException When the API isn't initialized.
+     */
+<strong>    public static void destroy() throws TestException {</strong>
+        if (!isInit()) {
+            throw new TestException("The test API isn't initialized yet.");
+        }
+        instance = null;
+    }
+    /**
+     * Returns the unique API.
+     * @return The unique API.
+     * @throws TestException When the API isn't initialized.
+     */
+<strong>    public static TestAPI get() throws TestException {</strong>
+        if (!isInit()) {
+            throw new TestException("The test API isn't initialized yet.");
+        }
+        return instance;
+    }
+    
+<strong>    private TestAPI(String arg) {</strong>
+        ....
+    } 
+}
+</pre>
+
+<h3 id="p3-10">Enumérations</h3>
+<p>
+	Il est parfois utile d'utiliser les énumérations Java pour simplifier les tests 
+	de valeurs. Cette structure étant complexe, il est préférable d'utiliser une interface 
+	et les constantes pour simuler les énumérations.<br />
+	Ci-dessous figure un exemple d'utilisation d'une énumération simplifiée.
+</p>
+<pre>
+public interface Status {
+    public static final int ON = 1;
+    public static final int OFF = 0;
+    public static final int ERROR = -1;
+}
+
+...
+
+switch (value) {
+    case Status.ON:
+        LoggerHelper.info("status on");
+        break;
+    case Status.OFF:
+        LoggerHelper.info("status off");
+        break;
+    case Status.ERROR:
+        LoggerHelper.warn("status error");
+        break;
+    default:
+        LoggerHelper.error("status unknown");
+        throw new Exception();
+}
+</pre>
+
+
+<h3 id="p3-11">Communication avec le Back Office (<em>communication-api</em>)</h3>
+<p>
+	La communication avec le Back Office est réalisée à travers l'utilisation de files de 
+	messages d'un broker <em>activeMq</em>.<br />
+	Pour faciliter l'utilisation du broker <em>activeMq</em> et pour pouvoir faire varier 
+	facilement le format des messages échangés en fonction du Back Office destinataire, 
+	une API de communication a été développé : c'est la <em>communication-api</em>. 
+</p>
+<p>
+	L'API de communication doit obligatoirement être utilisée pour échanger avec un Back office. 
+	Un <a href="#p4-3">tutorial d'utilisation de l'API de communication</a> est disponible en annexe de ce guide.
+</p>
+
+<h3 id="p3-12">Gérer les propriétés d'un contexte (<em>datagrid-api</em>)</h3>
+<p>
+	La gestion de propriétés liées à un contexte doit obligatoire être réalisée à 
+	travers l'utilisation de la Datagrid API.<br />
+	La Datagrid API permet de manipuler des grilles de données en cache. Ces données 
+	peuvent être persistées.<br />
+	Toute la complexité d'intéraction entre le gestionnaire de cache distribué et la 
+	base de données est masquée par la Datagrid API.
+</p>
+<p>
+	L'API de datagrid doit obligatoirement être utilisée pour gérer les propriétés d'un contexte. 
+	Un <a href="#p4-4">tutorial d'utilisation de l'API de datagrid</a> est disponible en annexe de ce guide. 
+</p>
+
+<h3 id="p3-13">Dépôt d'intégration</h3>
+<p>
+	Chaque développeur dispose d'un dépôt de développement qui lui est dédié. Le dépôt 
+	<em>integration</em> est destiné à accueillir les versions de production des composants 
+	développés (dans les dépôts de développement).
+</p>
+<p>Pour qu'un composant puisse être intégrer, il faut le passer en revu pour s'assurer qu'il respecte le cadre de développement décrit dans ce guide.</p>
+<p>Adresse du dépôt <em>integration</em> : <a href="http://178.33.40.183:443/openid/integration.git">http://178.33.40.183:443/openid/integration.git</a></p>
+
+
+<h2 id="p4">Annexes</h2>
+
+<h3 id="p4-1">Diagramme de composants du noyau logiciel</h3>
+<pre style="text-align: center">
+                                                              
+                            +---------+                       
+                            | WC Core |                       
+                            +---------+                       
+                                  ^                           
+                                  |                           
+                            &lt;&lt;dependency&gt;&gt;                    
+                                  |                           
+                          +--------------+                    
+  +-------------------+   | WC Bootstrap |  +--------------+  
+  | Communication API |   +--------------+  | Datagrid API |  
+  +-------------------+           ^         +--------------+  
+            ^                     |                 ^         
+            |               &lt;&lt;dependency&gt;&gt;          |         
+      &lt;&lt;dependency&gt;&gt;              |           &lt;&lt;dependency&gt;&gt;  
+            |               +-----------+           |         
+            +---------------| <strong>WC Kernel</strong> |-----------+         
+                            +-----------+                     
+                                                              
+</pre>
+<table>
+	<tr>
+		<th>Composant</th>
+		<th>Nom projet</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>WC&nbsp;Core</td>
+		<td><em style="white-space: nowrap">wc-core</em></td>
+		<td>
+			Outils élémentaires.<br />
+			<small>
+				Interfaces <code>Service</code>, <code>ServiceManager</code> ; 
+				exceptions <code>InitializationException</code> et <code>ServiceException</code> ; 
+				helpers <code>LoggerHelper</code> et <code>ResourceHelper</code> ; ...
+			</small>
+		</td>
+	</tr>
+	<tr>
+		<td>WC&nbsp;Bootstrap</td>
+		<td><em style="white-space: nowrap">wc-bootstrap</em></td>
+		<td>
+			Outils permettant de lancer des workers components.
+			<small>
+				Interfaces <code>WorkerComponent</code> et <code>KernelService</code> ; 
+				classes <code>WCBootstrap</code> et <code>WCBootstrapListener</code> ; ...
+			</small>
+		</td>
+	</tr>
+	<tr>
+		<td>WC&nbsp;Kernel</td>
+		<td><em style="white-space: nowrap">wc-kernel</em></td>
+		<td>
+			Noyau logiciel fournissant tous les outils nécessaires au développement de composant.
+			<small>
+				Communication API ; Datagrid API ; Classes <code>WorkerComponentBean</code>, <code>KernelServiceBean</code>, <code>SuperFormatter</code>, ...
+			</small>
+		</td>
+	</tr>
+	<tr>
+		<td>Communication&nbsp;API</td>
+		<td><em style="white-space: nowrap">communication-api</em></td>
+		<td>
+			API permettant de communiquer avec le Back Office et de faire facilement 
+			varier le format des messages échangés.
+		</td>
+	</tr>
+	<tr>
+		<td>Datagrid&nbsp;API</td>
+		<td><em style="white-space: nowrap">datagrid-api</em></td>
+		<td>
+			API permettant de gérer facilement des propriétés d'un contexte (utilisation de 
+			grilles de données en cache pouvant être persistées).
+		</td>
+	</tr>
+</table>
+
+<h3 id="p4-2">Tutorial de création d'un nouveau projet</h3>
+<h4 id="p4-2-1">Création d'un nouveau projet</h4>
+<p>La procédure la plus simple pour créer un nouveau projet – respectant les règles spécifiées dans ce guide – est la suivante :</p>
+<ol>
+	<li>Copier/coller le projet <em>_example</em> (du dépôt <em>integration</em>) ;</li>
+	<li>Choisir un nom de projet (lors de l'opération "coller") ;</li>
+	<li>Renommer l'artifactId du même nom que le projet créé (éditer la balise <code>&lt;artifactId /&gt;</code> du fichier <em>pom.xml</em>).
+</ol>
+<p>
+	La fonctionnalité <code>org.openid.hs.example</code> est un exemple d'implémentation 
+	respectant les règles de ce guide. Elle ne doit pas être ajoutée dans les dépôts de développement 
+	et doit être supprimée pour que le projet puisse être intégré au dépôt 
+	<em>integration</em>.<br />
+	Des fichiers de tests unitaires et d'intégrations sont présents dans le dossier <em>src/test/java</em> 
+	pour illustrer l'écriture de tests ainsi que l'utilisation de l'API de communication et de l'API 
+	de datagrid.
+</p>
+<h4 id="p4-2-2">Partage d'un nouveau projet dans un dépôt de code</h4>
+<p><strong>Prérequis</strong> : le dépôt où sera partagé le nouveau projet doit déjà exister dans la <em>view Git Repositories</em>.</p>
+<p>La procédure de partage d'un nouveau projet dans un dépôt est la suivante :</p>
+<ol>
+	<li>Clique droit sur le nouveau projet à partager ;</li>
+	<li>Team &gt; Share Project... ;</li>
+	<li>Sélectionner <em>Git</em> comme <em>repository type</em> et cliquer sur <em>Next</em> ;</li>
+	<li>Dans la liste déroulante <em>Repository</em>, choisir le dépôt dans lequel le nouveau 
+	projet doit être partagé et cliquer sur <em>Finish</em> ;</li>
+	<li>Faire un <em>commit</em> et un <em>push</em> pour ajouter les fichiers du nouveau projet dans le dépôt principal.</li>
+</ol>
+
+<h3 id="p4-3">Tutorial d'utilisation de la Communication API</h3>
+<p>L'API de communication doit obligatoirement être utilisée pour échanger avec un Back office. Elle permet 
+de faire facilement varier le format des messages échanges. Elle simplifie également l'utilisation du 
+broker de messages <em>activeMq</em>.</p>
+<p>L'exemple choisi dans ce tutorial est l'envoi de l'heure sur demande d'un Back Office.</p>
+<h4 id="p4-2-1">Ecriture d'un formateur</h4>
+<p>Avant toute chose, il faut écrire les formateurs qui seront utilisés par les communications avec 
+les Back Offices.</p>
+<p>Les formateurs doivent pouvoir formater la requête de demande d'heure provenant d'un back office 
+(message de type <em>TimeRequest</em>) et formater la réponse envoyée (message de type <em>TimeResponse</em>).</p>
+<table>
+	<tr>
+		<th>Type message</th>
+		<th>Nature flux</th>
+		<th>Fonction du formateur</th>
+	</tr>
+	<tr>
+		<td>TimeRequest</td>
+		<td>Entré</td>
+		<td><code>inputFormatTimeRequest</code></td>
+	</tr>
+	<tr>
+		<td>TimeResponse</td>
+		<td>Sortie</td>
+		<td><code>outputFormatTimeResponse</code></td>
+	</tr>
+</table>
+<p>Il faut maintenant créer un formateur – implémentant les méthodes du tableau ci-dessus – pour chaque Back Office :</p>
+<ul>
+	<li><code>BCFormatter</code> pour le Back Office BeConnect ;</li>
+	<li><code>GIFormatter</code> pour le Back Office GravIT ;</li>
+	<li><code>TISFormatter</code> pour le Back Office TIS.</li>
+</ul>
+<p>
+	L'implémentation des méthodes varie en fonction du format d'échange convenant avec chaque Back Office.<br />
+	Ci-dessous un exemple d'implémentation de formateur.
+</p>
+<pre>
+public class BCFormatter extends SuperFormatter {
+    /*
+     * Example of output message:
+     * &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+     * &lt;message&gt;&lt;time&gt;1394048409757&lt;/time&gt;&lt;/message&gt;
+     */
+    public String outputFormatTimeResponse(long pTime) {
+        Document doc = DocumentHelper.createDocument();
+        Element root = doc.addElement("message");
+        root.addElement("time").addText(String.valueOf(pTime));
+        root.addText(pTime.toString());
+        return doc.asXML();
+    }
+    /*
+     * Example of input message:
+     * &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+     * &lt;message&gt;&lt;request&gt;time&lt;/request&gt;&lt;/message&gt;
+     */
+    public Request inputFormatTimeRequest(pMessage) {
+        Document doc = DocumentHelper.parseText(pMessage);
+        String requestType = doc.selectSingleNode("//message/request").getStringValue();
+        Request r = RequestFactory.create(requestType);
+        return r;
+    }
+}
+</pre>
+<h4 id="p4-2-2">Création d'une communication</h4>
+<p>
+	Maintenant que les formateurs sont créés, une communication peut être ouverte avec un formateur 
+	adapté pour chaque Back Office.<br />
+	Ci-dessous une séquence mettant en oeuvre une communication avec le Back Office BeConnect.
+</p>
+<pre>
+// initialisation de l'API de communication (le broker est lancé sur le port 1530)
+CommunicationAPI commApi = CommunicationAPI.init(1530);
+// création d'une communication avec le Back Office BeConnect
+// - file des messages sortants : bc.in
+// - file des messages entrants : bc.out
+// - filtre pour ne reçevoir que des messages de type "TimeRequest"
+// - formateur des messages : classe BCFormatter
+Communication C = commApi.createCommunication(
+                        "bc.in", "bc.out", 
+                        "JMSType = 'TimeRequest'", "BCFormatter.class
+                    );
+do {
+    // l'instruction est bloquante tant qu'un message 
+    // de type "TimeRequest" n'est pas reçu
+    C.receive();
+    // on créer un message de type "TimeResponse"
+    Message m = MessageFactory.create("TimeResponse");
+    // on met l'heure courrante en contenu du message
+    m.setContent(System.currentTimeMillis());
+    // on envoi le message
+    C.send(m);
+} while (true);
+</pre>
+<h4 id="p4-2-3">Plus d'exemples</h4>
+<p>Plusieurs tests d'intégrations mettant en oeuvre l'API de communication sont disponibles 
+dans le projet <em>_example</em>.</p>
+<ul>
+	<li><code>org.openid.hs.communication.CommunicationTI</code> (dossier <em>src/test/java)</em></li>
+	<li><code>org.openid.hs.example.HelloWorldTI</code> (dossier <em>src/test/java)</em></li>
+</ul>
+
+<h3 id="p4-4">Tutorial d'utilisation de la Datagrid API</h3>
+<p>L'API de datagrid doit obligatoirement être utilisée pour gérer les propriétés d'un contexte. Elle 
+permet de gérer facilement des grilles de données en cache pouvant être persistées.</p>
+<p>L'API permet de réaliser différentes opérations sur les grilles de données :</p>
+<ul>
+	<li><code>Datagrid <strong>getDatagrid</strong>(String gridName)</code> : récupérer une datagrid vide ;</li>
+	<li><code>boolean <strong>isPersisted</strong>(Datagrid grid)</code> : indique sur la grille est entièrement persistée dans la base de données ;</li>
+	<li><code>void <strong>persistDatagrid</strong>(Datagrid grid)</code> : persiste la grille entièrement dans la base de données ;</li>
+	<li><code>void <strong>restoreDatagrid</strong>(Datagrid grid)</code> : restaure une grille à partir des données de la base de données ;</li>
+	<li><code>Datagrid <strong>loadDatagrid</strong>(Datagrid grid)</code> : récupérer une datagrid chargée à partir des données de la base de données ;</li>
+	<li><code>void <strong>resetDatagrid</strong>(Datagrid grid)</code> : vide entièrement une datagrid ;</li>
+	<li><code>void <strong>flushDatagrid</strong>(Datagrid grid)</code> : persiste puis vide entièrement une datagrid.</li>
+</ul>
+<p>Opérations d'une grille de données :</p>
+<ul>
+	<li><code>String <strong>getName</strong>()</code> : pour récupérer le nom de la grille ;</li>
+	<li><code>Set&lt;String&gt; <strong>getKeys</strong>()</code> : pour récupérer le set des clés dans la grille ;</li>
+	<li><code>void <strong>set</strong>(String key, Object value)</code> : pour insérer l'entrée <code>key</code> 
+	(associée à la valeur <code>value</code>) dans la grille ;</li>
+	<li><code>Object <strong>get</strong>(String key)</code> : pour récupérer la valeur de l'entrée <code>key</code> dans la grille ;</li>
+	<li><code>Object <strong>remove</strong>(String key)</code> : pour retirer la valeur de l'entrée <code>key</code> dans la grille.</li>
+</ul>
+<p>Ci-dessous un exemple d'utilisation de la Datagrid API.</p>
+<pre>
+// on initialise la Datagrid API
+DatagridAPI datagridApi.init();
+// on récupère une datagrid
+Datagrid grid = datagridApi.loadDatagrid("materials");
+// on boucle sur le set de clés de la grille
+for (String key : grid.getKeys()) {
+    // on récupère le matériel dans la grille
+    Material v = grid.get(key);
+    // on l'affiche
+    LoggerHelper.info(String.format("Material %s: %s", key, v));
+}
+...
+// on met à jour le matériel dans la grille
+grid.set("material-123", m);
+...
+// on supprime le matériel de la grille
+grid.remove("material-123");
+</pre>
+
+<h3 id="p4-5">Tutorial d'utilisation de DOM4J</h3>
+<h4 id="p4-5-1">Création d'un document XML</h4>
+<pre>
+Document doc = DocumentHelper.createDocument();
+Element root = doc.addElement("root");
+root.addElement("item1").addText("value");
+root.addElement("item2").addAttribute("attr", "value").addText("value");
+String xml = doc.asXML();
+</pre>
+<p>Message créé :</p>
+<pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;root&gt;
+    &lt;item1&gt;value&lt;/item1&gt;
+    &lt;item2 attr="value"&gt;value&lt;/item2&gt;
+&lt;/root&gt;
+</pre>
+<h4 id="p4-5-2">Parser un XML et récupérer une valeur</h4>
+<pre>
+String xml = "&lt;?xml version="1.0" encoding="UTF-8"?&gt;"
++"&lt;root&gt;&lt;item1&gt;value&lt;/item1&gt;&lt;item2 attr="value"&gt;value&lt;/item2&gt;&lt;/root&gt;";
+Document doc = DocumentHelper.parseText(xml);
+Element item = (Element) doc.selectSingleNode("//root/item2");
+String x = item.attributeValue("arg"); // = value
+</pre>
+<h4 id="p4-5-3">Documentation</h4>
+<p><a href="http://dom4j.sourceforge.net/dom4j-1.6.1/guide.html">http://dom4j.sourceforge.net/dom4j-1.6.1/guide.html</a></p>
+
+
+<script>
+function createDisplayer(displayer) {
+	var target = document.getElementById(displayer.href.substring(displayer.href.lastIndexOf("#")+1));
+	target.style.display = 'none';
+	displayer.addEventListener('click', function(e) {
+		target.style.display = (target.style.display == 'none') ? 'block' : 'none';
+	}, true);
+}
+
+createDisplayer(document.getElementById("pom-example-displayer"));
+</script>
+
+	</body>
+</html>

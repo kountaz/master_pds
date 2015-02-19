@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes>
+	<node name="lte.enodeb.paris.001">
+		<param name="kernel.host">127.0.0.1</param>
+		<param name="kernel.bootstrapPort">2500</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.enodeb.port">2501</param>
+		<param name="frontend.enodeb.portReceiver">2502</param>
+		<param name="frontend.enodeb.target">127.0.0.1:2602</param>
+		<param name="faildetector.port">2503</param>
+		<param name="activity.enodeb.port">2504</param>
+	</node>
+	<node name="lte.enodeb.paris.002">
+		<param name="kernel.host">127.0.0.1</param>
+		<param name="kernel.bootstrapPort">2520</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.enodeb.port">2521</param>
+		<param name="frontend.enodeb.portReceiver">2522</param>
+		<param name="frontend.enodeb.target">127.0.0.1:2622</param>
+		<param name="faildetector.port">2523</param>
+		<param name="activity.enodeb.port">2524</param>
+	</node>
+	<node name="lte.enodeb.paris.003">
+		<param name="kernel.host">127.0.0.1</param>
+		<param name="kernel.bootstrapPort">2540</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.enodeb.port">2541</param>
+		<param name="frontend.enodeb.portReceiver">2542</param>
+		<param name="frontend.enodeb.target">127.0.0.1:2642</param>
+		<param name="faildetector.port">2543</param>
+		<param name="activity.enodeb.port">2544</param>
+	</node>
+	<node name="lte.enodeb.paris.004">
+		<param name="kernel.host">127.0.0.1</param>
+		<param name="kernel.bootstrapPort">2560</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.enodeb.port">2561</param>
+		<param name="frontend.enodeb.portReceiver">2562</param>
+		<param name="frontend.enodeb.target">127.0.0.1:2642</param>
+		<param name="faildetector.port">2563</param>
+		<param name="activity.enodeb.port">2564</param>
+	</node>
+	<node name="lte.enodeb.paris.005">
+		<param name="kernel.host">127.0.0.1</param>
+		<param name="kernel.bootstrapPort">2580</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.enodeb.port">2581</param>
+		<param name="frontend.enodeb.portReceiver">2582</param>
+		<param name="frontend.enodeb.target">127.0.0.1:2682</param>
+		<param name="faildetector.port">2583</param>
+		<param name="activity.enodeb.port">2584</param>
+	</node>
+	<node name="lte.mme.paris.006">
+		<param name="kernel.host">127.0.0.1</param>
+		<param name="kernel.bootstrapPort">2600</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.mme.port">2601</param>
+		<param name="frontend.mme.portReceiver">2602</param>
+		<param name="frontend.mme.target">127.0.0.1:2701</param>
+		<param name="faildetector.port">2603</param>
+		<param name="activity.mme.port">2604</param>
+	</node>
+	<node name="lte.mme.paris.007">
+		<param name="kernel.host">127.0.0.1</param>
+		<param name="kernel.bootstrapPort">2620</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.mme.port">2621</param>
+		<param name="frontend.mme.portReceiver">2622</param>
+		<param name="frontend.mme.target">127.0.0.1:2721</param>
+		<param name="faildetector.port">2623</param>
+		<param name="activity.mme.port">2624</param>
+	</node>
+	<node name="lte.mme.paris.008">
+		<param name="kernel.host">127.0.0.1</param>
+		<param name="kernel.bootstrapPort">2640</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.mme.port">2641</param>
+		<param name="frontend.mme.portReceiver">2642</param>
+		<param name="frontend.mme.target">127.0.0.1:2741</param>
+		<param name="faildetector.port">2643</param>
+		<param name="activity.mme.port">2644</param>
+	</node>
+	<node name="lte.mme.paris.009">
+		<param name="kernel.host">127.0.0.1</param>
+		<param name="kernel.bootstrapPort">2660</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.mme.port">2661</param>
+		<param name="frontend.mme.portReceiver">2662</param>
+		<param name="frontend.mme.target">127.0.0.1:2761</param>
+		<param name="faildetector.port">2663</param>
+		<param name="activity.mme.port">2664</param>
+	</node>
+	<node name="lte.mme.paris.010">
+		<param name="kernel.host">127.0.0.1</param>
+		<param name="kernel.bootstrapPort">2680</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.mme.port">2681</param>
+		<param name="frontend.mme.portReceiver">2682</param>
+		<param name="frontend.mme.target">127.0.0.1:2781</param>
+		<param name="faildetector.port">2683</param>
+		<param name="activity.mme.port">2684</param>
+	</node>
+	<node name="lte.hss.paris.011">
+		<param name="kernel.host">127.0.0.1</param>
+		<param name="kernel.bootstrapPort">2700</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.hss.port">2701</param>
+		<param name="frontend.hss.portReceiver">2702</param>
+		<param name="frontend.hss.target">127.0.0.1:2602</param>
+		<param name="faildetector.port">2703</param>
+		<param name="activity.hss.port">2704</param>
+	</node>
+	<node name="lte.hss.paris.012">
+		<param name="kernel.host">127.0.0.1</param>
+		<param name="kernel.bootstrapPort">2720</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.hss.port">2721</param>
+		<param name="frontend.hss.portReceiver">2722</param>
+		<param name="frontend.hss.target">127.0.0.1:2622</param>
+		<param name="faildetector.port">2723</param>
+		<param name="activity.hss.port">2724</param>
+	</node>
+	<node name="lte.hss.paris.013">
+		<param name="kernel.host">127.0.0.1</param>
+		<param name="kernel.bootstrapPort">2740</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.hss.port">2641</param>
+		<param name="frontend.hss.portReceiver">2742</param>
+		<param name="frontend.hss.target">127.0.0.1:2642</param>
+		<param name="faildetector.port">2743</param>
+		<param name="activity.hss.port">2744</param>
+	</node>
+	<node name="lte.hss.paris.014">
+		<param name="kernel.host">127.0.0.1</param>
+		<param name="kernel.bootstrapPort">2760</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.hss.port">2761</param>
+		<param name="frontend.hss.portReceiver">2762</param>
+		<param name="frontend.hss.target">127.0.0.1:2662</param>
+		<param name="faildetector.port">2763</param>
+		<param name="activity.hss.port">2764</param>
+	</node>
+	<node name="lte.hss.paris.015">
+		<param name="kernel.host">127.0.0.1</param>
+		<param name="kernel.bootstrapPort">2780</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.hss.port">2781</param>
+		<param name="frontend.hss.portReceiver">2782</param>
+		<param name="frontend.hss.target">127.0.0.1:2682</param>
+		<param name="faildetector.port">2783</param>
+		<param name="activity.hss.port">2784</param>
+	</node>
+</nodes>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes>
+	<node name="lte.mme.paris.006">
+		<param name="kernel.host">192.168.0.37</param>
+		<param name="kernel.bootstrapPort">2600</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.mme.port">2601</param>
+		<param name="frontend.mme.portReceiver">2602</param>
+		<param name="frontend.mme.target">192.168.0.36:2701</param>
+		<param name="faildetector.port">2603</param>
+		<param name="activity.mme.port">2604</param>
+	</node>
+	<node name="lte.mme.paris.007">
+		<param name="kernel.host">192.168.0.37</param>
+		<param name="kernel.bootstrapPort">2620</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.mme.port">2621</param>
+		<param name="frontend.mme.portReceiver">2622</param>
+		<param name="frontend.mme.target">192.168.0.36:2721</param>
+		<param name="faildetector.port">2623</param>
+		<param name="activity.mme.port">2624</param>
+	</node>
+	<node name="lte.mme.paris.008">
+		<param name="kernel.host">192.168.0.37</param>
+		<param name="kernel.bootstrapPort">2640</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.mme.port">2641</param>
+		<param name="frontend.mme.portReceiver">2642</param>
+		<param name="frontend.mme.target">192.168.0.36:2741</param>
+		<param name="faildetector.port">2643</param>
+		<param name="activity.mme.port">2644</param>
+	</node>
+	<node name="lte.mme.paris.009">
+		<param name="kernel.host">192.168.0.37</param>
+		<param name="kernel.bootstrapPort">2660</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.mme.port">2661</param>
+		<param name="frontend.mme.portReceiver">2662</param>
+		<param name="frontend.mme.target">192.168.0.36:2761</param>
+		<param name="faildetector.port">2663</param>
+		<param name="activity.mme.port">2664</param>
+	</node>
+	<node name="lte.mme.paris.010">
+		<param name="kernel.host">192.168.0.37</param>
+		<param name="kernel.bootstrapPort">2680</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.mme.port">2681</param>
+		<param name="frontend.mme.portReceiver">2682</param>
+		<param name="frontend.mme.target">192.168.0.36:2781</param>
+		<param name="faildetector.port">2683</param>
+		<param name="activity.mme.port">2684</param>
+	</node>
+</nodes>

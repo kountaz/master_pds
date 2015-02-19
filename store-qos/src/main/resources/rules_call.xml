@@ -1,0 +1,32 @@
+<qos_rules>
+	<nodes>
+		<type_node name="MME">
+			<service name="call">
+				<rules name="bit_rate" unit="kbps">
+					<low>300</low>
+					<medium>200</medium>
+					<warning>100</warning>
+					<critical>50</critical>
+				</rules>
+				<rules name="delay" unit="ms">
+					<low>25</low>
+					<medium>50</medium>
+					<warning>75</warning>
+					<critical>100</critical>
+				</rules>
+				<rules name="packet_loss_rate" unit="pourcent">
+					<low>5</low>
+					<medium>10</medium>
+					<warning>15</warning>
+					<critical>20</critical>
+				</rules>
+				<rules name="jitter" unit="ms">
+					<low>10</low>
+					<medium>20</medium>
+					<warning>25</warning>
+					<critical>30</critical>
+				</rules>
+			</service>
+		</type_node>
+	</nodes>
+</qos_rules>

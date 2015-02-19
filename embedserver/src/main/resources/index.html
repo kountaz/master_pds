@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+	<head>
+		<title>OpenID - Hive Supervisor - Administration of system</title>
+		<meta charset="utf-8">
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<style type="text/css">
+		#wrapper {
+			width: 90%;
+			margin: auto;
+			padding: 0.4em;
+		}
+		#panel > div {
+			float: left;
+			width: 30%;
+			margin: 0.2em;
+			padding: 0.2em;
+			border: 2px solid black;
+			background: #eee;
+			font-size: 1.4em;
+		}
+		#panel > div > label {
+			display: block;
+		}
+		#panel > div > input {
+			margin: auto;
+			font-size: 1.2em;
+		}
+		</style>
+	</head>
+	<body>
+		<div id="wrapper">
+			<div id="panel"></div>
+		</div>
+		<script>
+		var nodes = {
+			ENB1: "192.168.0.38:2500",
+		  	ENB2: "192.168.0.38:2520",
+		  	ENB3: "192.168.0.38:2540",
+		  	ENB4: "192.168.0.38:2560",
+		  	ENB5: "192.168.0.38:2580",
+		  	MME1: "192.168.0.37:2600",  
+			MME2: "192.168.0.37:2620",
+			MME3: "192.168.0.37:2640",
+			MME4: "192.168.0.37:2660",
+			MME5: "192.168.0.37:2680",
+			HSS1: "192.168.0.36:2700",
+		  	HSS2: "192.168.0.36:2720",
+		  	HSS3: "192.168.0.36:2740",
+		  	HSS4: "192.168.0.36:2760",
+		  	HSS5: "192.168.0.36:2780"
+		};
+		var panel = document.getElementById('panel');
+		for (var i in nodes) {
+			$('#panel').append('<div id="'+i+'"><label><strong>'+i+'</strong> ('+nodes[i]+')</label><input type="button" id="'+i+'-on-btn" data-id="'+i+'" data-addr="'+nodes[i]+'" value="On" style="background-color: green;" /><input type="button" id="'+i+'-off-btn" data-id="'+i+'" data-addr="'+nodes[i]+'" value="Off" style="background-color: red;" /></div>');
+			$('#'+i+'-on-btn').click(function() {
+				var that = $(this);
+				var d = { };
+				//d[that.attr('data-id')] = that.attr('data-addr');
+				$.ajax({
+					url: "http://178.33.40.183/test/admin/start/"+that.attr('data-addr'),
+					type: "GET",
+					data: d,
+					dataType: "json",
+					success: function(data) {
+						alert('Start command was sent');
+					}
+				});
+			});
+			$('#'+i+'-off-btn').click(function() {
+				var that = $(this);
+				var d = { };
+				//d[that.attr('data-id')] = that.attr('data-addr');
+				$.ajax({
+					url: "http://178.33.40.183/test/admin/stop/"+that.attr('data-addr'),
+					type: "GET",
+					data: d,
+					dataType: "json",
+					success: function(data) {
+						alert('Stop command was sent');
+					}
+				});
+			});
+		}
+		</script>
+	</body>
+</html>

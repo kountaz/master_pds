@@ -1,0 +1,9 @@
+/target
+/.settings/org.eclipse.m2e.core.prefs
+/activemq-data
+/src/main/java/org/openid/hs/example
+/src/test/java/org/openid/hs/example
+/src/test/java/org/openid/hs/communication/CommunicationTI.java
+/src/test/java/org/openid/hs/communication/MyFormatter.java
+/src/test/java/org/openid/hs/datagrid/DatagridTI.java
+/src/test/java/org/openid/hs/wc/WorkerComponentTI.java

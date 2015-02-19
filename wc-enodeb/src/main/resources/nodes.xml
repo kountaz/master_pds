@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes>
+	<node name="lte.enodeb.paris.001">
+		<param name="kernel.host">192.168.0.38</param>
+		<param name="kernel.bootstrapPort">2500</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.enodeb.port">2501</param>
+		<param name="frontend.enodeb.portReceiver">2502</param>
+		<param name="frontend.enodeb.target">192.168.0.37:2602</param>
+		<param name="faildetector.port">2503</param>
+		<param name="activity.enodeb.port">2504</param>
+	</node>
+	<node name="lte.enodeb.paris.002">
+		<param name="kernel.host">192.168.0.38</param>
+		<param name="kernel.bootstrapPort">2520</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.enodeb.port">2521</param>
+		<param name="frontend.enodeb.portReceiver">2522</param>
+		<param name="frontend.enodeb.target">192.168.0.37:2622</param>
+		<param name="faildetector.port">2523</param>
+		<param name="activity.enodeb.port">2524</param>
+	</node>
+	<node name="lte.enodeb.paris.003">
+		<param name="kernel.host">192.168.0.38</param>
+		<param name="kernel.bootstrapPort">2540</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.enodeb.port">2541</param>
+		<param name="frontend.enodeb.portReceiver">2542</param>
+		<param name="frontend.enodeb.target">192.168.0.37:2642</param>
+		<param name="faildetector.port">2543</param>
+		<param name="activity.enodeb.port">2544</param>
+	</node>
+	<node name="lte.enodeb.paris.004">
+		<param name="kernel.host">192.168.0.38</param>
+		<param name="kernel.bootstrapPort">2560</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.enodeb.port">2561</param>
+		<param name="frontend.enodeb.portReceiver">2562</param>
+		<param name="frontend.enodeb.target">192.168.0.37:2642</param>
+		<param name="faildetector.port">2563</param>
+		<param name="activity.enodeb.port">2564</param>
+	</node>
+	<node name="lte.enodeb.paris.005">
+		<param name="kernel.host">192.168.0.38</param>
+		<param name="kernel.bootstrapPort">2580</param>
+		<param name="communication.bindPort">1499</param>
+		<param name="datagrid.databasePort">1500</param>
+		<param name="datagrid.memcachePort">1501</param>
+		<param name="frontend.enodeb.port">2581</param>
+		<param name="frontend.enodeb.portReceiver">2582</param>
+		<param name="frontend.enodeb.target">192.168.0.37:2682</param>
+		<param name="faildetector.port">2583</param>
+		<param name="activity.enodeb.port">2584</param>
+	</node>
+</nodes>
